@@ -1,11 +1,14 @@
-import { Injectable } from '@nestjs/common';
-import { Pokemon } from './entity/pokemon.entity';
+import { Controller, Injectable } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
+import { PrismaService } from 'src/prisma/prisma.service';
 
+@ApiTags('pokemons')
+@Controller('pokemons')
 @Injectable()
 export class PokemonService {
-  pokemon: Pokemon[] = [];
+  constructor(private readonly prisma: PrismaService) {}
 
   getAll() {
-    return this.pokemon;
+    return this.prisma.pokemon.findMany();
   }
 }
