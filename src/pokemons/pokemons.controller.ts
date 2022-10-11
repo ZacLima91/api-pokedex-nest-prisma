@@ -1,6 +1,15 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CreatePokemonDto } from './dto/create-pokemon.dto';
+import { UpdatePokemonDto } from './dto/update-pokemon.dto';
 import { Pokemon } from './entity/pokemon.entity';
 import { PokemonService } from './pokemons.service';
 
@@ -31,5 +40,24 @@ export class PokemonController {
   })
   getById(@Param('id') id: string): Promise<Pokemon> {
     return this.pokemonService.getById(id);
+  }
+
+  @Patch(':id')
+  @ApiOperation({
+    summary: 'Edita um pokemon',
+  })
+  update(
+    @Param('id') id: string,
+    @Body() dto: UpdatePokemonDto,
+  ): Promise<Pokemon> {
+    return this.pokemonService.update(id, dto);
+  }
+
+  @Delete(':id')
+  @ApiOperation({
+    summary: 'Deleta um pokemon',
+  })
+  delete(@Param('id') id: string) {
+    return this.pokemonService.delete(id);
   }
 }
